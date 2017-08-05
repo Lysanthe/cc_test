@@ -1,5 +1,8 @@
 package bc.util;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class Util {
 
 	public static String BytesToString(byte[] input) {
@@ -9,4 +12,20 @@ public class Util {
 		}
 		return sb.toString();
 	}
+
+	public static byte[] SignBlock(Block block) {
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		md.update(block.GetHeader()); 
+		byte[] digest = md.digest();
+
+		return digest;
+	}
+
 }

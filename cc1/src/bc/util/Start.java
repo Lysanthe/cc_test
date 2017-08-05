@@ -6,8 +6,12 @@ public class Start {
 
 		Block block = new Block();
 
-		System.out.print(Util.BytesToString(block.GetHeader()));
-
+		System.out.println(Util.BytesToString(block.GetHeader()));
+		
+		byte[] hash = Util.SignBlock(block);
+		System.out.println(Util.BytesToString(hash));
+		
+		//String.format("%064x", new java.math.BigInteger(1, digest));
 	}
 
 }
