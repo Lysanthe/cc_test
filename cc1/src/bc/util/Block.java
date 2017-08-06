@@ -1,7 +1,7 @@
 package bc.util;
 
 import java.nio.ByteBuffer;
-import java.util.BitSet;
+import java.util.Arrays;
 
 public class Block {
 	public byte[] version = { 0x00, 0x00, 0x00, 0x01 };
@@ -9,7 +9,7 @@ public class Block {
 	public byte[] merkleRoot = new byte[32];
 	public byte[] reserved = new byte[32];
 	public byte[] timestamp = new byte[8];
-	public byte[] bits = { 0x00, 0x00, 0x00, 0xFF & 4 };
+	public byte[] bits = { (byte) 0x00, (byte) 0x00, (byte) 0xFF, (byte) 0xFF };
 	public byte[] nounce = new byte[32];
 	public byte[] hash = new byte[32];
 
@@ -46,17 +46,25 @@ public class Block {
 	public byte[] GetHash() {
 		return hash;
 	}
+	
+	// ------------------------------------------------------------------------
+	public boolean isHashValid()
+	{
+		byte[] calcHash = Util.hashBlock(this);
+		
+		return hash.equals(calcHash);
+	}
 
 	// ------------------------------------------------------------------------
-	public BitSet getBitDifficulty() {
-		BitSet bs = new BitSet(hash.length * 8);
-		int diff = (bits[3] & 0xFF);
-		for (int index = 0; index < diff; index++) {
-			bs.set(index);
-		}
-		byte[] bytes = bs.toByteArray();
-		System.out.println(Util.bytesToString(bs.toByteArray()));
-		return bs;
+	public byte[] getTarget() {
+		
+		short exp = (short)(bits[0] & 0xFF);
+		byte[] mult = Arrays.copyOfRange(bits,1,4);
+		byte[] target = new byte[32];
+		
+		System.arraycopy(mult, 0, target, exp, 3);
+		
+		return target;		
 	}
 
 }

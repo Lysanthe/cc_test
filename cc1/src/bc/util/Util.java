@@ -13,18 +13,18 @@ public class Util {
 		return sb.toString();
 	}
 
-	public static void hashBlock(Block block) {
+	public static byte[] hashBlock(Block block) {
 		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA-256");
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
-			return;
+			return null;
 		}
 
 		md.update(block.GetHeader()); 
 		
-		block.hash = md.digest();		
+		return md.digest();		
 	}
 
 }

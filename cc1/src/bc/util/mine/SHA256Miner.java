@@ -7,45 +7,46 @@ import bc.util.Block;
 import bc.util.Util;
 
 public class SHA256Miner {
-	
+
 	private Block block = null;
-	private BitSet bitDiff = null;
+	private byte[] target = null;
 	private long passes = 0;
-	
-	public SHA256Miner(Block block)
-	{
+
+	public SHA256Miner(Block block) {
 		this.block = block;
-		this.bitDiff = block.getBitDifficulty();
+		this.target = block.getTarget();
 	}
-	
-	public void start()
-	{
+
+	public void start() {
 		boolean nounceFound = false;
-		
-		while(nounceFound != true)
-		{
+		byte[] hash = null;
+
+		while (nounceFound != true) {
 			setNewNounce();
-			Util.hashBlock(block);
-			nounceFound = validHash();	
+			hash = Util.hashBlock(block);
+			nounceFound = validHash(hash);
 			passes++;
 		}
+		block.hash = hash;
 	}
-	
-	public long getNumberOfPasses()
-	{
+
+	public long getNumberOfPasses() {
 		return passes;
 	}
-	
-	private boolean validHash()
-	{
-		BitSet bs = BitSet.valueOf(block.hash);
-		BitSet save = (BitSet) bs.clone();
-		bs.and(bitDiff);
-		return bs.isEmpty();
+
+	private boolean validHash(byte[] hash) {
+		for (int index = 0; index < hash.length; index++) {
+			short h = (short) (hash[index] & 0xFF);
+			short t = (short) (target[index] & 0xFF);
+			if (h < t)
+				return true;
+			if (h > t)
+				return false;
+		}
+		return true;
 	}
-	
-	private void setNewNounce()
-	{		
+
+	private void setNewNounce() {
 		new Random().nextBytes(block.nounce);
 	}
 
