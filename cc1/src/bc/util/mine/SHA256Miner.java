@@ -1,6 +1,5 @@
 package bc.util.mine;
 
-import java.util.BitSet;
 import java.util.Random;
 
 import bc.util.Block;
