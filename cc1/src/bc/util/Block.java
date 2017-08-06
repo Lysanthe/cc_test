@@ -13,7 +13,7 @@ public class Block {
 	public byte[] merkleRoot = new byte[32];
 	public byte[] reserved = new byte[32];
 	public byte[] timestamp = new byte[8];
-	public byte[] bits = { (byte) 0x04, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF };
+	public byte[] bits = { (byte) 0x03, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF };
 	public byte[] nounce = new byte[32];
 	public byte[] hash = new byte[32];
 
@@ -81,6 +81,7 @@ public class Block {
 		obj.add("timestamp", Util.bytesToString(timestamp));
 		obj.add("bits", Util.bytesToString(bits));
 		obj.add("nounce", Util.bytesToString(nounce));
+		obj.add("target", Util.bytesToString(getTarget()));
 		obj.add("hash", Util.bytesToString(hash));
 				
 

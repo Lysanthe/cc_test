@@ -5,28 +5,31 @@ import java.util.Random;
 import bc.util.Block;
 import bc.util.Util;
 
-public class SHA256Miner {
+public class SHA256Miner implements Runnable {
 
 	private Block block = null;
 	private byte[] target = null;
 	private long passes = 0;
+	public boolean running = true;
 
 	public SHA256Miner(Block block) {
 		this.block = block;
 		this.target = block.getTarget();
 	}
 
-	public void start() {
+	@Override
+	public void run() {
 		boolean nounceFound = false;
 		byte[] hash = null;
 
-		while (nounceFound != true) {
+		while (!nounceFound && running) {
 			setNewNounce();
 			hash = Util.hashBlock(block);
 			nounceFound = validHash(hash);
 			passes++;
 		}
-		block.hash = hash;
+		if (nounceFound)
+			block.hash = hash;
 	}
 
 	public long getNumberOfPasses() {
