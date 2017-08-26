@@ -1,4 +1,4 @@
-package bc.util;
+package bc;
 
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -9,6 +9,7 @@ import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 
+import bc.util.Block;
 import bc.util.mine.SHA256Miner;
 import bc.util.mine.ThreadMiner;
 
