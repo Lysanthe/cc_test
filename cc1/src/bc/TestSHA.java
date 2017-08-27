@@ -10,14 +10,12 @@ public class TestSHA {
 
 	public static void main(String[] args) {
 
-		byte[] input = new byte[32];
-		byte[] hash;
-		 long passes = 0;
-		 long previousTime = System.currentTimeMillis();
-		 
-				 
+		byte[] input = new byte[144];
+		byte[] hash = new byte[32];
+		long passes = 0;
+		long previousTime = System.currentTimeMillis();
 
-		new Random().nextBytes(input);
+		//new Random().nextBytes(input);
 
 		MessageDigest md = null;
 		try {
@@ -27,21 +25,20 @@ public class TestSHA {
 		}
 
 		while (true) {
-			//new Random().nextBytes(input);
-			md.update(input);
+			// new Random().nextBytes(input);
+			md.update(hash);
 			hash = md.digest();
 			passes++;
-			if (passes % 10000000 == 0)
-			{
+			if (passes % 1000000 == 0) {
 				long timePassed = System.currentTimeMillis() - previousTime;
 				long hashRate = passes / timePassed * 1000;
-				System.out.format("HashRate: %,d H/s \n", hashRate);
-				passes = 0;			
+				System.out.format("HashRate: %,d H/s  HASH: %s \n", hashRate, Util.bytesToString(hash));
+				passes = 0;
 				previousTime = System.currentTimeMillis();
 			}
 		}
 
-		//System.out.println(Util.bytesToString(hash));
+		// System.out.println(Util.bytesToString(hash));
 	}
 
 }
